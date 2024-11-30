@@ -22,4 +22,4 @@ export class Candidate {
 
     @Column({ nullable: true })
     recruitmentYear: number;
-}
+} 
