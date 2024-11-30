@@ -24,16 +24,10 @@ export class CandidatesService {
         return this.candidatesRepository.find();
     }
 
-   
-    async findOne(id: number): Promise<Candidate> {
-        const candidate = await this.candidatesRepository.findOne({ where: { id } });
-        if (!candidate) {
-            throw new NotFoundException(`Candidate with id ${id} not found`);
-        }
-        return candidate;
+    findOne(id: number): Promise<Candidate> {
+        return this.candidatesRepository.findOneBy({ id });
     }
 
-   
     async update(id: number, updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
         const candidate = await this.findOne(id); // Already throws NotFoundException if not found
         Object.assign(candidate, updateCandidateDto);
