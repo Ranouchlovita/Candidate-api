@@ -18,9 +18,12 @@ export class CandidatesController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<Candidate> {
-        return this.candidatesService.findOne(+id);
+    async findOne(@Param('id') id: string): Promise<Candidate> {
+    const candidate = await this.candidatesService.findOne(+id);
+    if (!candidate) {
+        throw new NotFoundException(`Candidate with id ${id} not found`);
     }
+    return candidate;
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
