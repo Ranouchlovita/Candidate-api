@@ -20,8 +20,8 @@ export class CandidatesService {
         return this.candidatesRepository.find();
     }
 
-    findOne(id: number): Promise<Candidate> {
-        return this.candidatesRepository.findOneBy({ id });
+    async findOne(id: number): Promise<Candidate | null> {
+        return await this.candidatesRepository.findOne({ where: { id } });
     }
 
     async update(id: number, updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
