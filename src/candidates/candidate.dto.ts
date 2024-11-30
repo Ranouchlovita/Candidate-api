@@ -1,4 +1,15 @@
-import { IsEmail, IsNotEmpty, IsBoolean, IsOptional, IsArray, IsString, IsNumber } from 'class-validator';
+import {
+    IsNotEmpty,
+    IsString,
+    IsEmail,
+    IsBoolean,
+    IsOptional,
+    IsArray,
+    IsNumber,
+    ArrayNotEmpty,
+    ValidateIf,
+    ValidationArguments,
+} from 'class-validator';
 
 export class CreateCandidateDto {
     @IsNotEmpty()
@@ -9,6 +20,8 @@ export class CreateCandidateDto {
     email: string;
 
     @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
     skills: string[];
 
     @IsNotEmpty()
@@ -18,7 +31,20 @@ export class CreateCandidateDto {
     @IsBoolean()
     recruited: boolean;
 
-    @IsOptional()
+    // Valider uniquement si recruited est true
+    @ValidateIf((o) => o.recruited)
+    @IsNotEmpty({ message: 'recruitmentYear is required when recruited is true' })
     @IsNumber()
-    recruitmentYear?: number; // Assurez-vous que ce champ est ici
+    recruitmentYear?: number;
+
+    // Valider si recruited est false
+    @ValidateIf((o) => !o.recruited)
+    validateRecruitmentYear(value: number): boolean {
+        if (value !== null && value !== undefined) {
+            throw new Error(
+                `recruitmentYear must be null when recruited is false`
+            );
+        }
+        return true; // Validation réussie si la condition est remplie
+    }
 }
