@@ -8,35 +8,37 @@ import { CreateCandidateDto } from './candidate.dto';
 export class CandidatesService {
     constructor(
         @InjectRepository(Candidate)
-        private candidatesRepository: Repository<Candidate>,
+        private readonly candidatesRepository: Repository<Candidate>,
     ) {}
 
-    create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
+    /**
+     * Creates a new candidate.
+     */
+    async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
         const candidate = this.candidatesRepository.create(createCandidateDto);
         return this.candidatesRepository.save(candidate);
     }
 
+    
     findAll(): Promise<Candidate[]> {
         return this.candidatesRepository.find();
     }
 
-    async findOne(id: number): Promise<Candidate | null> {
-        return await this.candidatesRepository.findOne({ where: { id } });
+    findOne(id: number): Promise<Candidate> {
+        return this.candidatesRepository.findOneBy({ id });
     }
 
     async update(id: number, updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
-        const candidate = await this.findOne(id);
-        if (!candidate) {
-            throw new NotFoundException('Candidate not found');
-        }
+        const candidate = await this.findOne(id); // Already throws NotFoundException if not found
         Object.assign(candidate, updateCandidateDto);
         return this.candidatesRepository.save(candidate);
     }
 
+   
     async remove(id: number): Promise<void> {
         const result = await this.candidatesRepository.delete(id);
         if (result.affected === 0) {
-            throw new NotFoundException('Candidate not found');
+            throw new NotFoundException(`Candidate with id ${id} not found`);
         }
     }
 }
