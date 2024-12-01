@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { Candidate } from './candidates.entity';
 import { CreateCandidateDto } from './candidate.dto';
 
@@ -11,9 +11,7 @@ export class CandidatesService {
         private readonly candidatesRepository: Repository<Candidate>,
     ) {}
 
-    /**
-     * Creates a new candidate.
-     */
+    
     async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
         const candidate = this.candidatesRepository.create(createCandidateDto);
         return this.candidatesRepository.save(candidate);
@@ -28,8 +26,19 @@ export class CandidatesService {
         return this.candidatesRepository.findOneBy({ id });
     }
 
+    async getStatisticsByYear(year: number): Promise<Candidate[]> {
+        return this.candidatesRepository.find({
+            where: {
+                recruited: true,
+                recruitmentYear: year,
+            },
+        });
+    }
+    
+    
+
     async update(id: number, updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
-        const candidate = await this.findOne(id); // Already throws NotFoundException if not found
+        const candidate = await this.findOne(id); 
         Object.assign(candidate, updateCandidateDto);
         return this.candidatesRepository.save(candidate);
     }

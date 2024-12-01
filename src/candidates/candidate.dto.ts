@@ -31,13 +31,13 @@ export class CreateCandidateDto {
     @IsBoolean()
     recruited: boolean;
 
-    // Valider uniquement si recruited est true
+   
     @ValidateIf((o) => o.recruited)
     @IsNotEmpty({ message: 'recruitmentYear is required when recruited is true' })
     @IsNumber()
     recruitmentYear?: number;
 
-    // Valider si status est "en attente"
+    
     @ValidateIf((o) => o.status === 'en attente')
     validateRecruitmentYear(value: number): boolean {
         if (value !== null && value !== undefined) {
@@ -45,6 +45,6 @@ export class CreateCandidateDto {
                 `recruitmentYear is not allowed when status is 'en attente'`
             );
         }
-        return true; // Validation réussie si la condition est remplie
+        return true; 
     }
 }
