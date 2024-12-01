@@ -11,8 +11,7 @@ export class CandidatesService {
         private readonly candidatesRepository: Repository<Candidate>,
     ) {}
 
-    
-    async create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
+    create(createCandidateDto: CreateCandidateDto): Promise<Candidate> {
         const candidate = this.candidatesRepository.create(createCandidateDto);
         return this.candidatesRepository.save(candidate);
     }
@@ -22,23 +21,17 @@ export class CandidatesService {
         return this.candidatesRepository.find();
     }
 
-    findOne(id: number): Promise<Candidate> {
-        return this.candidatesRepository.findOneBy({ id });
-    }
-
-    async getStatisticsByYear(year: number): Promise<Candidate[]> {
-        return this.candidatesRepository.find({
-            where: {
-                recruited: true,
-                recruitmentYear: year,
-            },
-        });
+    async findOne(id: number): Promise<Candidate | null> {
+        return await this.candidatesRepository.findOne({ where: { id } });
     }
     
     
 
     async update(id: number, updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
-        const candidate = await this.findOne(id); 
+        const candidate = await this.findOne(id);
+        if (!candidate) {
+            throw new NotFoundException('Candidate not found');
+        }
         Object.assign(candidate, updateCandidateDto);
         return this.candidatesRepository.save(candidate);
     }
