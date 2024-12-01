@@ -22,6 +22,11 @@ export class CandidatesController {
         return this.candidatesService.findOne(+id);
     }
 
+    @Get('statistics/year/:year')
+    async getStatisticsByYear(@Param('year') year: number): Promise<Candidate[]> {
+    return this.candidatesService.getStatisticsByYear(year);
+    }
+
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
         return this.candidatesService.update(+id, updateCandidateDto);
