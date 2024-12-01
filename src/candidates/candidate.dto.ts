@@ -37,12 +37,12 @@ export class CreateCandidateDto {
     @IsNumber()
     recruitmentYear?: number;
 
-    // Valider si recruited est false
-    @ValidateIf((o) => !o.recruited)
+    // Valider si status est "en attente"
+    @ValidateIf((o) => o.status === 'en attente')
     validateRecruitmentYear(value: number): boolean {
         if (value !== null && value !== undefined) {
             throw new Error(
-                `recruitmentYear must be null when recruited is false`
+                `recruitmentYear is not allowed when status is 'en attente'`
             );
         }
         return true; // Validation réussie si la condition est remplie
