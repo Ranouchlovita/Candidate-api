@@ -22,19 +22,10 @@ export class CandidatesController {
         return this.candidatesService.findOne(+id);
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 57f3cfb81deb675ec27c036a3198895535f7f3db
     @Get('statistics/year/:year')
     async getStatisticsByYear(@Param('year') year: number): Promise<Candidate[]> {
-    return this.candidatesService.getStatisticsByYear(year);
+        return this.candidatesService.getStatisticsByYear(year);
     }
-<<<<<<< HEAD
-    
-
-=======
->>>>>>> 57f3cfb81deb675ec27c036a3198895535f7f3db
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCandidateDto: CreateCandidateDto): Promise<Candidate> {
@@ -46,4 +37,3 @@ export class CandidatesController {
         return this.candidatesService.remove(+id);
     }
 }
-
