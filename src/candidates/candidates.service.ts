@@ -6,6 +6,9 @@ import { CreateCandidateDto } from './candidate.dto';
 
 @Injectable()
 export class CandidatesService {
+    getStatisticsByYear(year: number): Candidate[] | PromiseLike<Candidate[]> {
+        throw new Error('Method not implemented.');
+    }
     constructor(
         @InjectRepository(Candidate)
         private readonly candidatesRepository: Repository<Candidate>,

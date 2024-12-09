@@ -21,15 +21,14 @@ export class CandidatesController {
     findOne(@Param('id') id: string): Promise<Candidate> {
         return this.candidatesService.findOne(+id);
     }
-<<<<<<< HEAD
+
 
     @Get('statistics/year/:year')
     async getStatisticsByYear(@Param('year') year: number): Promise<Candidate[]> {
     return this.candidatesService.getStatisticsByYear(year);
     }
     
-=======
->>>>>>> 072ae4c729379e9e36389a638a65f7532dcfe092
+
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCandidateDto: CreateCandidateDto): Promise<Candidate> {

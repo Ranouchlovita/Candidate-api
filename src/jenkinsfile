@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t rania2001/candidate-api:latest .'
+                }
+            }
+        }
+        stage('Push to DockerHub') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'dockerhub-credentials', url: '']) {
+                        sh 'docker push rania2001/candidate-api:latest'
+                    }
+                }
+            }
+        }
+        stage('Deploy Container') {
+            steps {
+                script {
+                    sh 'docker run -d -p 4000:3000 rania2001/candidate-api:latest'
+                }
+            }
+        }
+    }
+}
